@@ -79,6 +79,8 @@ if submitted:
 
 	#convert datetime str to YYYY-mm-dd format
 
+	st.write(final_data.head())
+
 	final_data['date'] = [datetime.fromisoformat(time[:-1]).strftime('%Y-%m-%d') for time in final_data.date.tolist()]
 
 	#get the dataset on open, close price and adjusted open and close price
