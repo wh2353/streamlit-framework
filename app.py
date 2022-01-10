@@ -56,6 +56,11 @@ if submitted:
 	if len(ticker) == 0:
 		ticker = 'IBM'
 
+	#if no selection, then by default, plot on close price will be outputed
+
+	if np.sum([cp, acp, op, aop]) == 0:
+		st.warning("No Selection made! Swtich to default option (close price only)!")
+		cp = True
 
 	#get the from and to date
 	from_date = date.today() + relativedelta(months=-6)
@@ -68,11 +73,10 @@ if submitted:
 	data = r.json()
 
 
-	#report error if ticker name is not correct
+	
 
-	if(len(data) == 0):
-		st.write(f"Error! Please double check ticker name {ticker}!")
-	else:	
+	
+	try:	
 
 		final_data = pd.DataFrame.from_records(data, index=range(len(data)))
 
@@ -123,6 +127,9 @@ if submitted:
 		show(p)
 
 		st.bokeh_chart(p, use_container_width=True)
+	#report error if ticker name is not correct
+	except:
+		st.error(f"Error! Please double check ticker name {ticker}!")
 
 	
 
