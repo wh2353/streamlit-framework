@@ -75,7 +75,7 @@ if submitted:
 
 
 
-	final_data = pd.DataFrame.from_records(data)
+	final_data = pd.DataFrame.from_records(data, index=range(len(data)))
 
 	#convert datetime str to YYYY-mm-dd format
 
