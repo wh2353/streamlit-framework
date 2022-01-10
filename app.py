@@ -53,7 +53,7 @@ if submitted:
 	#API_KEY = os.getenv('API_key')
 	API_KEY = "jVMjfuubX3o0Nmre4y6PLQbRh_Rj8cEr"
 
-	print(f"The API key is {API_KEY}")
+	st.write(f"The API key is {API_KEY}")
 
 
 	if len(ticker) == 0:
