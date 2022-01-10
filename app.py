@@ -68,60 +68,61 @@ if submitted:
 	data = r.json()
 
 
+	#report error if ticker name is not correct
 
-	
+	if(len(data) == 0):
+		st.write(f"Error! Please double check ticker name {ticker}!")
+	else:	
 
+		final_data = pd.DataFrame.from_records(data, index=range(len(data)))
 
+		#convert datetime str to YYYY-mm-dd format
 
-	final_data = pd.DataFrame.from_records(data, index=range(len(data)))
+		
 
-	#convert datetime str to YYYY-mm-dd format
+		final_data['date'] = [datetime.fromisoformat(time[:-1]).strftime('%Y-%m-%d') for time in final_data.date.tolist()]
 
-	st.write(final_data.head())
+		#get the dataset on open, close price and adjusted open and close price
+		plot_data = final_data[['close', 'adjClose', 'open', 'adjOpen']]
 
-	final_data['date'] = [datetime.fromisoformat(time[:-1]).strftime('%Y-%m-%d') for time in final_data.date.tolist()]
+		#get selected columns only
+		plot_data = plot_data.loc[:,[cp, acp, op, aop]]
 
-	#get the dataset on open, close price and adjusted open and close price
-	plot_data = final_data[['close', 'adjClose', 'open', 'adjOpen']]
+		plot_data['date'] = pd.to_datetime(final_data['date'])
 
-	#get selected columns only
-	plot_data = plot_data.loc[:,[cp, acp, op, aop]]
-
-	plot_data['date'] = pd.to_datetime(final_data['date'])
-
-	
-
-
-	all_var = list(plot_data.columns[:-1])
-
-	numlines=len(all_var)
-	mypalette=Spectral4[0:numlines]
+		
 
 
+		all_var = list(plot_data.columns[:-1])
+
+		numlines=len(all_var)
+		mypalette=Spectral4[0:numlines]
 
 
 
-	p = figure(width=800, height=450, x_axis_type="datetime")
-	p.title.text = f'{ticker} in the past 6 months'
-	p.title.align = "center"
-	p.title.text_font_size = "25px"
-	p.xaxis[0].axis_label = 'Date'
-	p.yaxis[0].axis_label = 'Price'
-	
-
-	for name, color in zip(all_var, Spectral4):
 
 
-		p.line(plot_data['date'], plot_data[name], line_width=2, color=color, alpha=0.8, legend_label=name)
+		p = figure(width=800, height=450, x_axis_type="datetime")
+		p.title.text = f'{ticker} in the past 6 months'
+		p.title.align = "center"
+		p.title.text_font_size = "25px"
+		p.xaxis[0].axis_label = 'Date'
+		p.yaxis[0].axis_label = 'Price'
+		
+
+		for name, color in zip(all_var, Spectral4):
 
 
-	p.add_layout(Legend(), 'right')
+			p.line(plot_data['date'], plot_data[name], line_width=2, color=color, alpha=0.8, legend_label=name)
 
-	output_file("interactive_legend.html", title="interactive_legend.py example")
 
-	show(p)
+		p.add_layout(Legend(), 'right')
 
-	st.bokeh_chart(p, use_container_width=True)
+		output_file("interactive_legend.html", title="interactive_legend.py example")
+
+		show(p)
+
+		st.bokeh_chart(p, use_container_width=True)
 
 	
 
