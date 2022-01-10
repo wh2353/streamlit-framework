@@ -50,7 +50,8 @@ if submitted:
 
 	# replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
 	load_dotenv()
-	API_KEY = os.getenv('API_key')
+	#API_KEY = os.getenv('API_key')
+	API_KEY = "jVMjfuubX3o0Nmre4y6PLQbRh_Rj8cEr"
 
 	print(f"The API key is {API_KEY}")
 
